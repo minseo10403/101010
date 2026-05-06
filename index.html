@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>organoid.site - The Future of Medicine</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- [Design System] --- */
+        :root {
+            --bg-pure-black: #000000;
+            --surface-dark: #141517;
+            --surface-hover: #1f2124;
+            --text-white: #ffffff;
+            --text-gray-light: #b0b8c1;
+            --text-gray-dark: #8b95a1;
+            --toss-blue: #3182f6;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --radius-xl: 32px;
+            --radius-lg: 20px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; word-break: keep-all; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-pure-black);
+            color: var(--text-white);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* --- [Typography] --- */
+        h1, h2, h3, h4 { color: var(--text-white); font-weight: 800; letter-spacing: -0.03em; }
+        p { color: var(--text-gray-light); }
+        .accent { color: var(--toss-blue); }
+
+        /* --- [Layout] --- */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        
+        header {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            display: flex; align-items: center;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 1000; border-bottom: 1px solid var(--border-color);
+        }
+        .header-inner { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+        .logo { font-size: 22px; font-weight: 900; letter-spacing: -0.5px; }
+        .nav-links a { color: var(--text-gray-light); text-decoration: none; margin-left: 24px; font-weight: 600; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--text-white); }
+
+        /* --- [Hero Section] --- */
+        .hero { padding-top: 180px; padding-bottom: 80px; text-align: center; animation: fadeIn 1s ease-out; }
+        .hero-tag { display: inline-block; color: var(--toss-blue); font-weight: 800; font-size: 16px; letter-spacing: 2px; margin-bottom: 24px; text-transform: uppercase; }
+        .hero h1 { font-size: 84px; line-height: 1.1; margin-bottom: 32px; letter-spacing: -2.5px; }
+        .hero p { font-size: 24px; color: var(--text-gray-dark); max-width: 800px; margin: 0 auto; line-height: 1.6; }
+
+        .image-showcase {
+            width: 100%; max-width: 1200px; margin: 0 auto 100px auto;
+            border-radius: var(--radius-xl); overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6); border: 1px solid var(--border-color);
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+        .image-showcase img { width: 100%; height: auto; display: block; }
+
+        /* --- [Sections Common] --- */
+        .section { padding: 120px 0; border-bottom: 1px solid var(--border-color); }
+        .section-header { margin-bottom: 60px; }
+        .section-header h2 { font-size: 56px; margin-bottom: 24px; line-height: 1.2; }
+        .section-header p { font-size: 22px; color: var(--toss-blue); font-weight: 600; }
+        .text-block { font-size: 20px; line-height: 1.8; margin-bottom: 40px; color: var(--text-gray-light); }
+        .text-block strong { color: var(--text-white); }
+
+        /* --- [1. Clickable Feature (Tabs)] --- */
+        .tab-section { background: var(--surface-dark); padding: 80px 0; border-radius: var(--radius-xl); border: 1px solid var(--border-color); margin-bottom: 120px; }
+        .tab-menu { display: flex; justify-content: center; gap: 16px; margin-bottom: 48px; flex-wrap: wrap; padding: 0 24px; }
+        .tab-btn {
+            background: transparent; color: var(--text-gray-dark); border: 1px solid var(--border-color);
+            padding: 16px 32px; border-radius: 50px; font-size: 18px; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; font-family: inherit;
+        }
+        .tab-btn:hover { background: rgba(255,255,255,0.05); }
+        .tab-btn.active { background: var(--toss-blue); color: #fff; border-color: var(--toss-blue); }
+        
+        .tab-content { display: none; padding: 0 40px; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        .tab-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .tab-text h3 { font-size: 36px; margin-bottom: 20px; }
+        .tab-text p { font-size: 18px; line-height: 1.8; color: var(--text-gray-light); margin-bottom: 20px; }
+        .tab-image { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-color); }
+        .tab-image img { width: 100%; height: 300px; object-fit: cover; display: block; }
+
+        /* --- [2. Scroll Feature (Split Layout)] --- */
+        .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 60px; }
+        .split-image img { width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--border-color); }
+
+        /* --- [3. Grids & Cards] --- */
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-top: 60px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
+        .card { background: var(--surface-dark); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 40px; transition: all 0.3s ease; }
+        .card:hover { background: var(--surface-hover); transform: translateY(-8px); border-color: var(--toss-blue); }
+        .card h3 { font-size: 26px; margin-bottom: 16px; color: var(--text-white); }
+        .card p { font-size: 17px; line-height: 1.6; color: var(--text-gray-light); }
+
+        /* --- [4. Table] --- */
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 40px; background: var(--surface-dark); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border-color); }
+        .data-table th, .data-table td { padding: 28px; border-bottom: 1px solid var(--border-color); text-align: left; font-size: 18px; }
+        .data-table th { color: var(--text-white); font-weight: 800; background: rgba(255,255,255,0.02); font-size: 20px; }
+        .data-table td { color: var(--text-gray-light); line-height: 1.6; }
+        .data-table tr:last-child td { border-bottom: none; }
+
+        /* --- [Footer] --- */
+        footer { padding: 60px 0; text-align: center; border-top: 1px solid var(--border-color); margin-top: 60px; }
+        footer p { font-size: 16px; color: var(--text-gray-dark); letter-spacing: 1px; }
+
+        /* --- [Animations & Responsive] --- */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 48px; }
+            .section-header h2 { font-size: 40px; }
+            .grid-2, .grid-3, .split-layout, .tab-inner { grid-template-columns: 1fr; }
+            .tab-btn { padding: 12px 20px; font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container header-inner">
+            <div class="logo">organoid.site</div>
+            <nav class="nav-links">
+                <a href="#atlas">Atlas</a>
+                <a href="#engineering">Engineering</a>
+                <a href="#ethics">Ethics</a>
+                <a href="#future">Future</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero container">
+        <span class="hero-tag">The Avatar of Human Life</span>
+        <h1>Life, <br><span class="accent">Reconstructed.</span></h1>
+        <p>인류의 장기를 플라스틱 배양 접시 위에서 재현하다.<br>줄기세포와 3D 미세물리학이 만들어낸 완벽한 인간의 아바타, <strong>오가노이드(Organoid).</strong></p>
+    </section>
+
+    <div class="image-showcase container">
+        <img src="image_0cc438.jpg" alt="Human Organoids Map in a well plate">
+    </div>
+
+    <section id="atlas" class="container">
+        <div class="section-header">
+            <h2>The Human <br>Organoids Map.</h2>
+            <p>클릭하여 각 장기 아바타의 특징을 확인하세요</p>
+        </div>
+
+        <div class="tab-section">
+            <div class="tab-menu">
+                <button class="tab-btn active" onclick="openTab('brain')">Cerebral (미니 뇌)</button>
+                <button class="tab-btn" onclick="openTab('liver')">Hepatic (간)</button>
+                <button class="tab-btn" onclick="openTab('gut')">Intestinal (장)</button>
+                <button class="tab-btn" onclick="openTab('tumor')">Tumoroid (종양)</button>
+            </div>
+
+            <div id="brain" class="tab-content active">
+                <div class="tab-inner">
+                    <div class="tab-text">
+                        <h3 class="accent">대뇌피질의 완벽한 모사</h3>
+                        <p>신경 전구 세포를 3차원으로 분화시켜 실제 인간 뇌의 6개 층 구조를 재현합니다. 놀랍게도 임신 20주 차 태아 수준의 뇌파(EEG)가 측정되며, 알츠하이머와 같은 퇴행성 뇌질환이나 지카 바이러스(Zika Virus)로 인한 소두증 메커니즘을 밝혀낸 핵심 기술입니다.</p>
+                        <p><strong>주요 연구:</strong> 자폐 스펙트럼, 뇌전증, 파킨슨병 약물 스크리닝</p>
+                    </div>
+                    <div class="tab-image">
+                        <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&q=80&w=800" alt="Brain mapping">
+                    </div>
+                </div>
+            </div>
+
+            <div id="liver" class="tab-content">
+                <div class="tab-inner">
+                    <div class="tab-text">
+                        <h3 class="accent">신약 독성 테스트의 최전선</h3>
+                        <p>간은 인체의 해독을 담당하는 핵심 기관입니다. 동물 실험에서 안전하다고 판명된 약이 사람의 간을 파괴하는 경우가 많습니다. 환자의 세포로 만든 간 오가노이드는 신약 투여 시 발생할 수 있는 간 독성(Hepatotoxicity)을 인간 투여 전에 100%에 가깝게 예측해냅니다.</p>
+                        <p><strong>주요 연구:</strong> 지방간, 간경변증, 약물 대사 시뮬레이션</p>
+                    </div>
+                    <div class="tab-image">
+                        <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=80&w=800" alt="Lab microscope">
+                    </div>
+                </div>
+            </div>
+
+            <div id="gut" class="tab-content">
+                <div class="tab-inner">
+                    <div class="tab-text">
+                        <h3 class="accent">오가노이드의 기원</h3>
+                        <p>2009년 한스 클레버스 연구팀이 Lgr5+ 줄기세포로 세계 최초로 배양에 성공한 장기입니다. 미세한 융모(Villi) 구조와 상피 세포를 완벽히 가지며, 영양분 흡수와 장내 미생물(Microbiome) 생태계를 연구하는 데 독보적인 역할을 합니다.</p>
+                        <p><strong>주요 연구:</strong> 크론병, 염증성 장질환, 낭포성 섬유증 맞춤 치료</p>
+                    </div>
+                    <div class="tab-image">
+                        <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=800" alt="Microbiology">
+                    </div>
+                </div>
+            </div>
+
+            <div id="tumor" class="tab-content">
+                <div class="tab-inner">
+                    <div class="tab-text">
+                        <h3 class="accent">암 정복을 위한 N-of-1 의료</h3>
+                        <p>환자의 실제 암 조직을 수술로 떼어내어 배양한 종양 아바타입니다. 환자 고유의 유전자 변이와 종양 미세환경을 100% 간직하고 있습니다. 수백 개의 항암제를 이 아바타에 동시에 떨어뜨려, 환자 본인에게 부작용 없이 완벽하게 듣는 '단 하나의 약'을 사전에 찾아냅니다.</p>
+                        <p><strong>주요 연구:</strong> 초고속 항암제 스크리닝, 전이 메커니즘 차단</p>
+                    </div>
+                    <div class="tab-image">
+                        <img src="https://images.unsplash.com/photo-1579566346927-c68383817a25?auto=format&fit=crop&q=80&w=800" alt="DNA structure">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="engineering" class="section container">
+        <div class="section-header">
+            <h2>The Engineering <br>of Complexity.</h2>
+            <p>배양 접시 위에서 생명을 조각하는 3대 핵심 요소</p>
+        </div>
+        
+        <div class="text-block">
+            단순한 세포 덩어리를 넘어 실제 장기처럼 구조화되기 위해서는, 세포에게 <strong>"네가 있어야 할 곳은 인체 내부다"</strong>라고 착각하게 만드는 정교한 생화학적, 물리적 환경이 필수적입니다.
+        </div>
+
+        <div class="grid-3">
+            <div class="card">
+                <h3 style="font-size: 22px; margin-bottom: 16px; color: var(--toss-blue);">iPSCs (유도만능줄기세포)</h3>
+                <p>환자의 피부나 혈액 세포에 특정 전사인자를 주입해 세포의 시계를 태아 상태로 되돌립니다. 원하는 어떤 장기로든 무한정 분화시킬 수 있는 오가노이드의 '원재료'입니다.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-size: 22px; margin-bottom: 16px; color: var(--toss-blue);">Matrigel (세포외기질)</h3>
+                <p>세포가 바닥에 납작하게 붙지 않고, 허공에서 입체적으로 뭉치도록 잡아주는 '비계(Scaffold)'입니다. 인체 내부와 동일한 환경을 제공하여 3차원 자가 조직화를 유도합니다.</p>
+            </div>
+            <div class="card">
+                <h3 style="font-size: 22px; margin-bottom: 16px; color: var(--toss-blue);">Bioreactors (생물반응기)</h3>
+                <p>조직이 커지면 중심부까지 산소가 닿지 않습니다. 회전형 배양기에 넣고 계속 돌려주며, 혈류가 흐르는 것과 같은 물리적 자극을 주고 산소 투과율을 극대화합니다.</p>
+            </div>
+        </div>
+
+        <div class="split-layout" style="margin-top: 100px;">
+            <div class="split-text">
+                <h3 style="font-size: 36px; margin-bottom: 24px;">동물 실험의 종말, FDA 2.0</h3>
+                <p style="font-size: 18px; color: var(--text-gray-light); line-height: 1.8;">
+                    수십 년간 신약 개발은 쥐나 원숭이에 의존해 왔습니다. 하지만 동물과 인간의 생물학적 차이로 인해, 동물 실험을 무사히 통과한 신약의 <strong>92%가 사람 대상 임상 1상에서 독성이나 효능 부족으로 실패</strong>합니다.<br><br>
+                    2022년 말 미국 의회를 통과한 <strong>FDA Modernization Act 2.0</strong>은 1938년부터 이어져 온 '신약 승인 전 동물 실험 의무화' 규정을 전면 폐지했습니다. 이제 오가노이드 데이터만으로 신약 임상 허가를 신청하는 시대가 열렸습니다.
+                </p>
+            </div>
+            <div class="split-image">
+                <img src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?auto=format&fit=crop&q=80&w=800" alt="Laboratory testing tubes">
+            </div>
+        </div>
+    </section>
+
+    <section id="ethics" class="section container">
+        <div class="section-header">
+            <h2>Challenges & <br>Ethical Dilemmas.</h2>
+            <p>오가노이드가 완벽해지기 위해 넘어야 할 거대한 장벽들</p>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3 class="accent">1. 혈관망(Vascularization)의 부재</h3>
+                <p>오가노이드는 자체적인 혈관 시스템이 없어 수 밀리미터(mm) 이상 자라지 못합니다. 중심부에 산소가 도달하지 않아 세포가 썩는 <strong>'괴사 중심부(Necrotic Core)'</strong> 현상이 발생합니다. 이를 극복하기 위해 혈관 내피 세포를 융합하는 연구가 전 세계적으로 진행 중입니다.</p>
+            </div>
+            <div class="card">
+                <h3 class="accent">2. 면역 체계(Immune System) 미비</h3>
+                <p>기본적인 오가노이드에는 대식세포나 T세포 같은 면역 세포가 없습니다. 감염병이나 자가면역질환을 제대로 연구하려면, 환자의 혈액에서 추출한 면역 세포를 오가노이드 주변에 함께 넣고 기르는 <strong>공배양(Co-culture) 기술</strong>이 완벽해져야 합니다.</p>
+            </div>
+            
+            <div class="card" style="grid-column: 1 / -1; border-color: #ff453a; background: rgba(255, 69, 58, 0.05);">
+                <h3 style="color: #ff453a; font-size: 32px;">3. 의식을 가진 미니 뇌? (Consciousness)</h3>
+                <p style="font-size: 18px;">가장 뜨겁고 섬뜩한 생명윤리 논쟁입니다. 최근 뇌 오가노이드 연구에서 빛에 반응하는 안구 구조(Optic cup)가 자라나고, 외부 자극에 신경이 반응하는 것이 관찰되었습니다. 철학자들은 묻습니다. <strong>"이 플라스틱 접시 위의 뇌 신경망이 미세한 고통을 느끼거나 흐릿한 의식을 가질 수 있는가?"</strong> 만약 그렇다면, 실험이 끝난 후 이 조직을 폐기하는 행위에 대한 완전히 새로운 글로벌 윤리 및 법적 가이드라인이 필요해집니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="future" class="section container" style="border-bottom: none;">
+        <div class="section-header">
+            <h2>The Convergence <br>Horizon.</h2>
+            <p>한계를 돌파하는 혁신 융합 바이오 테크놀로지</p>
+        </div>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>혁신 기술 (Convergence Tech)</th>
+                    <th>오가노이드와의 융합 시너지</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>3D Bioprinting<br>(3D 바이오프린팅)</strong></td>
+                    <td>혈관 부재 문제를 해결할 구원투수입니다. 살아있는 세포가 담긴 '바이오 잉크'를 3D 프린터로 층층이 인쇄해, 마이크로 단위의 미세한 혈관 채널과 장기 뼈대를 정밀하게 구축합니다. 미래에는 이식용 인공 심장 출력이 목표입니다.</td>
+                </tr>
+                <tr>
+                    <td><strong>Organ-on-a-Chip<br>(장기 칩, OOC)</strong></td>
+                    <td>USB 크기의 투명한 칩에 미세 유체관을 파고 오가노이드를 넣습니다. 기계적 펌프를 달아 실제 피가 흐르는 압력(Fluid shear stress)과 호흡할 때 폐가 늘어나는 물리적 연동 운동을 완벽히 모사하여 동적 환경을 제공합니다.</td>
+                </tr>
+                <tr>
+                    <td><strong>CRISPR-Cas9<br>(유전자 가위)</strong></td>
+                    <td>배양된 환자의 오가노이드 내에서 유전병을 일으키는 돌연변이 DNA를 잘라내고 정상으로 교정합니다. 완벽히 고쳐진 오가노이드를 다시 환자에게 이식하는, 부작용 없는 궁극의 재생 의학을 실현합니다.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="logo" style="margin-bottom: 16px; font-size: 18px; color: #fff;">organoid.site</div>
+            <p>&copy; 2026 organoid.site. All rights reserved. The Next Paradigm of Human Life.</p>
+        </div>
+    </footer>
+
+    <script>
+        function openTab(tabName) {
+            // 모든 탭 내용과 버튼의 active 클래스 제거
+            var contents = document.getElementsByClassName("tab-content");
+            var buttons = document.getElementsByClassName("tab-btn");
+            
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+                buttons[i].classList.remove("active");
+            }
+            
+            // 선택된 탭과 버튼 활성화
+            document.getElementById(tabName).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+
+        // 헤더 스크롤 배경 효과
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(0, 0, 0, 0.9)';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.7)';
+            }
+        });
+    </script>
+</body>
+</html>
